@@ -3,6 +3,7 @@
 import time
 import io
 import sys
+from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup, Comment
 import pandas
@@ -25,12 +26,15 @@ element.location_once_scrolled_into_view
 soup = BeautifulSoup(driver.page_source, "html.parser")
 driver.close()
 
-# Get catagory name
+# Get category name
 try:
-    catagory = soup.find("h2", text="排行榜").find_next().findChildren()[0].text
+    category = soup.find("h2", text="排行榜").find_next().findChildren()[0].text
 except AttributeError:
-    catagory = None
-print("排行類別: ", catagory)
+    category = None
+
+timestr = datetime.now().strftime("%Y%m%d-%H%M")
+
+print("排行類別: ", category)
 
 l = []
 index = 1
@@ -52,5 +56,5 @@ for element in elements:
     l.append(d)
 
 df = pandas.DataFrame(l)
-print(tabulate(df, headers='keys', tablefmt='psql'))
-df.to_csv('output/output.csv')
+print(tabulate(df, headers="keys", tablefmt="psql"))
+df.to_csv("output/output_" + category + "_" + timestr + ".csv")
