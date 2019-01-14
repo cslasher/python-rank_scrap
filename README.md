@@ -11,7 +11,7 @@ This scraper parse the current best selling product list from the front page "Be
 ### Prerequisites
 
 - Python 3.6+
-- [Webdriver for Chrome](http://chromedriver.chromium.org/) 2.45
+- [Webdriver for Chrome](http://chromedriver.chromium.org/) 2.45+ - Installed and path configured
 
 ### Modules Used
 
