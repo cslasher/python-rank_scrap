@@ -34,8 +34,6 @@ except AttributeError:
 
 timestr = datetime.now().strftime("%Y%m%d-%H%M")
 
-print("排行類別: ", category)
-
 l = []
 index = 1
 
@@ -56,5 +54,18 @@ for element in elements:
     l.append(d)
 
 df = pandas.DataFrame(l)
+
+print("Current best selling products for", category + ":")
 print(tabulate(df, headers="keys", tablefmt="psql"))
-df.to_csv("output/output_" + category + "_" + timestr + ".csv")
+
+inputstr = input(
+    "Enter 1 to save as csv. \nEnter 2 to save as excel. \nEnter any other key to quit without saving.\n")
+if inputstr == "1":
+    print("Saving csv to output/output_" + category + "_" + timestr + ".csv")
+    df.to_csv("output/output_" + category + "_" + timestr + ".csv")
+elif inputstr == "2":
+    print("Saving csv to output/output_" + category + "_" + timestr + ".xlsx")
+    writer = pandas.ExcelWriter(
+        "output/output_" + category.replace("/", "").replace("\\", "") + "_" + timestr + ".xlsx")
+    df.to_excel(writer, "Sheet1")
+    writer.save()
