@@ -10,8 +10,9 @@ from tabulate import tabulate
 
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+base_url = "https://tw.buy.yahoo.com"
 driver = webdriver.Chrome()
-driver.get("https://tw.buy.yahoo.com/")
+driver.get(base_url)
 
 
 element = driver.find_element_by_class_name("billboardbox")
@@ -25,25 +26,31 @@ soup = BeautifulSoup(driver.page_source, "html.parser")
 driver.close()
 
 # Get catagory name
-catagory = soup.find("h2", text = "排行榜").find_next().findChildren()[0].text
+try:
+    catagory = soup.find("h2", text="排行榜").find_next().findChildren()[0].text
+except AttributeError:
+    catagory = None
 print("排行類別: ", catagory)
 
 l = []
 index = 1
 
-elements = soup.find_all("div", {"class":"rank"})
+elements = soup.find_all("div", {"class": "rank"})
 for element in elements:
-  d = {}
-  d["Ranking"] = index
-  d["Price"] = element.find_next().find_next().find("span", {"class":"shpprice"}).text
-  d["Description"] = element.find_next().text
-  # d["Link"] = element.parent["href"]
-  print(index, element.parent)
+    d = {}
+    d["Ranking"] = index
+    d["Price"] = element.find_next().find_next().find(
+        "span", {"class": "shpprice"}).text
+    d["Description"] = element.find_next().text
+    #  element.parent["href"]
+    if (index == 1):
+        d["Link"] = base_url + element.parent["href"]
+    else:
+        d["Link"] = base_url + element.parent.parent["href"]
 
-  index = index + 1
-  l.append(d)
+    index = index + 1
+    l.append(d)
 
 df = pandas.DataFrame(l)
 print(tabulate(df, headers='keys', tablefmt='psql'))
-df.to_csv('output.csv')
-
+df.to_csv('output/output.csv')
