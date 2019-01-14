@@ -25,13 +25,13 @@ This scraper parse the current best selling product list from the front page "Be
 
 Installing modules
 
-```
+```console
 pip install -r requirements.txt
 ```
 
 ### Usage
 
-```
+```console
 python app.py
 ```
 
