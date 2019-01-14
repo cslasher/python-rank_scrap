@@ -2,6 +2,10 @@
 
 Python scraper to retrieve the top selling products from a certain site
 
+## Description
+
+This scraper parse the current best selling product list from the front page "Best selling billboard" block. Display results in the console, then provides user with the option to save the results as a csv file or an excel file.
+
 ## Getting Started
 
 ### Prerequisites
